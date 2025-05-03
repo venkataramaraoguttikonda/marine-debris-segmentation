@@ -1,0 +1,27 @@
+# Ignore data and predictions
+data/
+predictions_*/
+vis_outputs/
+plots/
+trained_models/
+
+# Ignore Python cache and artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.ipynb_checkpoints
+
+# Ignore environment files
+.env
+.venv
+
+# Ignore Jupyter notebooks (optional)
+*.ipynb
+
+# Ignore model weights
+*.pth
+
+# VSCode or PyCharm settings (optional)
+.vscode/
+.idea/
