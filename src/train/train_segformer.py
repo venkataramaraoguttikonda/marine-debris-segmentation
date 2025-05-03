@@ -9,29 +9,20 @@ import os
 import matplotlib.pyplot as plt
 
 # ------------------------------ Class Weights Computation ------------------------------
-def compute_class_weights(label_paths, num_classes, c=1.02):
+def compute_class_weights(label_paths, num_classes):
     """
-    Computes inverse log frequency class weights.
+    Computes class weights based on inverse frequency.
     """
     class_counts = torch.zeros(num_classes)
+    for label_path in label_paths:
+        with rasterio.open(label_path) as lbl_file:
+            label = torch.tensor(lbl_file.read(1), dtype=torch.long)
+            for c in range(num_classes):
+                class_counts[c] += (label == c).sum()
 
-    for path in label_paths:
-        with rasterio.open(path) as src:
-            label = torch.tensor(src.read(1), dtype=torch.long)
-
-            # Remap debris classes to 7
-            for src_class in [12, 13, 14, 15]:
-                label = torch.where(label == src_class, 7, label)
-
-            # Exclude background class 0
-            label = label[label != 0]
-
-            for i in range(num_classes):
-                class_counts[i] += (label == i).sum()
-
-    class_distribution = class_counts / class_counts.sum()
-    class_weights = 1.0 / torch.log(c + class_distribution)
-
+    class_counts += 1e-6  # avoid division by zero
+    total_pixels = class_counts.sum()
+    class_weights = (total_pixels - class_counts) / total_pixels
     return class_weights
 
 # ------------------------------ Training Loop ------------------------------
@@ -42,7 +33,7 @@ def train_segformer(
     device,
     num_epochs=30,
     batch_size=8,
-    lr=5e-5,
+    lr=8e-5,
     save_path="trained_models/segformer_marida.pth"
 ):
     """
@@ -136,23 +127,16 @@ def train_segformer(
 
     # -------- Save loss and mIoU curves --------
     plt.figure()
-    plt.plot(train_losses, label="Train Loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("SegFormer Training Loss")
-    plt.legend()
-    plt.savefig("plots/segformer_loss_curve.png")
-    plt.close()
-
-    plt.figure()
+    plt.plot(train_losses, label="Train Loss", color="blue")
     plt.plot(val_losses, label="Val Loss", color="red")
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.title("SegFormer Validation Loss")
+    plt.title("SegFormer Training and Validation Loss")
     plt.legend()
-    plt.savefig("plots/segformer_val_loss_curve.png")
+    plt.savefig("plots/segformer_combined_loss_curve.png")
     plt.close()
 
+    # Validation mIoU Plot (unchanged)
     plt.figure()
     plt.plot(miou_scores, label="Validation mIoU", color="green")
     plt.xlabel("Epoch")
