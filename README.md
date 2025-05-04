@@ -29,7 +29,6 @@ This project uses the **Marine Debris Archive (MARIDA)** — a weakly-supervised
 
 You can download the MARIDA dataset from:
 
-- **[Zenodo (DOI: 10.5281/zenodo.7053888)](https://doi.org/10.5281/zenodo.7053888)**
 - **[Radiant MLHub](https://mlhub.earth/data/marida)**
 
 After downloading, extract it under the `data/` directory:
