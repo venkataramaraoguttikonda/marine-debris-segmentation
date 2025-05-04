@@ -1,12 +1,15 @@
-# Marine Debris Segmentation using Deep Learning
+# Benchmarking Attention-Driven Deep Networks for Marine Debris Segmentation in Sentinel-2 Imagery
 
-This repository presents a modular pipeline for segmenting marine debris and related oceanographic features from Sentinel-2 satellite imagery. We benchmark three models — **UNet**, **UNet++**, and **SegFormer** — on the MARIDA dataset.
+This repository provides a modular and scalable deep learning pipeline for semantic segmentation of marine debris and oceanographic features from Sentinel-2 satellite data. It benchmarks three powerful models — **UNet_CBAM**, **UNetPlusPlus_CBAM**, and **SegFormer** — on the **MARIDA** dataset.
 
-The pipeline includes:
-- Custom PyTorch datasets and loaders
-- Class-weighted loss for imbalance handling
-- Automated training, inference, evaluation, and visualization
-- Loss and mIoU plots for training diagnostics
+The selected architectures incorporate **attention mechanisms** (e.g., CBAM and Transformers) to enhance feature learning and spatial understanding, especially in cluttered ocean scenes. The goal is to improve detection of complex sea surface phenomena including marine debris, Sargassum, ship wakes, foam, and more.
+
+🔧 The pipeline includes:
+- Custom PyTorch datasets and loaders tailored for MARIDA
+- Attention-enhanced CNNs (CBAM) and Transformer-based segmentation
+- Class-weighted loss for handling class imbalance
+- Automated scripts for training, inference, evaluation, and visualization
+- Training diagnostics via loss and mean IoU (mIoU) plots
 
 
 
