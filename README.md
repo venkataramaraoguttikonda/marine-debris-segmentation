@@ -107,28 +107,36 @@ marine-debris-segmentation/
 
 > 🔄 Additional folders like `trained_models/`, `predictions_*/`, `vis_outputs/`, and `plots/` are **automatically generated** during training, inference, and visualization steps.
 
-### 📈 Training & Evaluation
 
-You can train, evaluate, and visualize results for any of the supported models using the shell scripts in the `scripts/` directory:
+## 🚀 Training & Evaluation
 
-#### 🔁 Train and Evaluate (from scratch)
+This repository supports training and evaluation of three segmentation models: **UNet_CBAM**, **UNetPlusPlus_CBAM**, and **SegFormer**.
+
+---
+
+### 📜 Script-Based Execution
+
+Each model has a dedicated shell script under `scripts/` for running the full pipeline:
 
 ```bash
-# UNet
-bash scripts/run_unet.sh
+# Train, predict, evaluate and visualize for UNet
+chmod +x scripts/run_unet.sh
+./scripts/run_unet.sh
 
-# UNet++
-bash scripts/run_unetpp.sh
+# UNet++ (UNetPlusPlus_CBAM)
+chmod +x scripts/run_unetpp.sh
+./scripts/run_unetpp.sh
 
 # SegFormer
-bash scripts/run_segformer.sh
+chmod +x scripts/run_segformer.sh
+./scripts/run_segformer.sh
 ```
 
 ---
 
-#### 📦 Use Pretrained Models (on test split only)
+### 🧪 Inference + Evaluation using Pretrained Models
 
-If you have only the test split (included in this repo) and want to run inference + evaluation + visualization using pretrained models in `trained_models/`:
+If you only want to run inference, evaluation, and visualization using pretrained models (already available in `trained_models/`), use:
 
 ```bash
 # UNet
@@ -141,8 +149,12 @@ python src/main.py --model unet++ --predict --evaluate --visualize
 python src/main_segformer.py --predict --evaluate --visualize
 ```
 
-🧠 Note: The outputs will be saved under:
+These commands use the **test split only**, which is included in the repository under `data/splits/test_X.txt`.
+
+---
+
+🧠 **Note:** The outputs will be saved under:
 
 - `predictions_unet/`, `predictions_unetpp/`, `predictions_segformer/`
 - `vis_outputs/unet/`, `vis_outputs/unetpp/`, `vis_outputs/segformer/`
-- `plots/` for training loss/mIoU curves if training is run
+- `plots/` for training loss/mIoU curves (if training is run)
