@@ -54,7 +54,8 @@ def train_segformer(
     best_miou = 0.0
     train_losses = []
     val_losses = []
-    miou_scores = []
+    train_miou_scores = []
+    val_miou_scores = []
 
     for epoch in range(num_epochs):
         # --------training phase--------
@@ -78,13 +79,42 @@ def train_segformer(
         train_losses.append(avg_train_loss)
         print(f"Epoch [{epoch+1}] Train Loss: {avg_train_loss:.4f}")
 
-        # --------validation phase--------
+        # -------- train mIoU --------
         model.eval()
+        iou_per_class_train = torch.zeros(model.config.num_labels).to(device)
+        total_per_class_train = torch.zeros(model.config.num_labels).to(device)
+
+        with torch.no_grad():
+            for batch in train_loader:
+                pixel_values = batch["pixel_values"].to(device)
+                labels = batch["labels"].to(device)
+
+                logits = model(pixel_values=pixel_values).logits
+                logits = F.interpolate(logits, size=labels.shape[-2:], mode='bilinear', align_corners=False)
+                preds = logits.argmax(dim=1)
+
+                mask = labels != 255
+                for cls in range(model.config.num_labels):
+                    pred_inds = (preds == cls)
+                    label_inds = (labels == cls)
+                    intersection = ((pred_inds & label_inds) & mask).sum().float()
+                    union = ((pred_inds | label_inds) & mask).sum().float()
+
+                    if union > 0:
+                        iou = intersection / (union + 1e-6)
+                        iou_per_class_train[cls] += iou
+                        total_per_class_train[cls] += 1
+
+        train_mean_iou = (iou_per_class_train / (total_per_class_train + 1e-6)).mean().item()
+        train_miou_scores.append(train_mean_iou)
+        print(f"Epoch [{epoch+1}] Train mIoU: {train_mean_iou:.4f}")
+
+        # --------validation phase--------
         val_loss = 0.0
         total = 0
         correct = 0
-        iou_per_class = torch.zeros(model.config.num_labels).to(device)
-        total_per_class = torch.zeros(model.config.num_labels).to(device)
+        iou_per_class_val = torch.zeros(model.config.num_labels).to(device)
+        total_per_class_val = torch.zeros(model.config.num_labels).to(device)
 
         with torch.no_grad():
             for batch in val_loader:
@@ -110,18 +140,18 @@ def train_segformer(
 
                     if union > 0:
                         iou = intersection / (union + 1e-6)
-                        iou_per_class[cls] += iou
-                        total_per_class[cls] += 1
+                        iou_per_class_val[cls] += iou
+                        total_per_class_val[cls] += 1
 
         avg_val_loss = val_loss / len(val_loader)
         val_losses.append(avg_val_loss)
         acc = correct / total
-        mean_iou = (iou_per_class / (total_per_class + 1e-6)).mean().item()
-        miou_scores.append(mean_iou)
-        print(f"Epoch [{epoch+1}] Val Loss: {avg_val_loss:.4f}, Acc: {acc:.4f}, mIoU: {mean_iou:.4f}")
+        val_mean_iou = (iou_per_class_val / (total_per_class_val + 1e-6)).mean().item()
+        val_miou_scores.append(val_mean_iou)
+        print(f"Epoch [{epoch+1}] Val Loss: {avg_val_loss:.4f}, Acc: {acc:.4f}, mIoU: {val_mean_iou:.4f}")
 
-        if mean_iou > best_miou:
-            best_miou = mean_iou
+        if val_mean_iou > best_miou:
+            best_miou = val_mean_iou
             torch.save(model.state_dict(), save_path)
             print(f"Saved best model to {save_path} with mIoU: {best_miou:.4f}")
 
@@ -136,12 +166,13 @@ def train_segformer(
     plt.savefig("plots/segformer_combined_loss_curve.png")
     plt.close()
 
-    # Validation mIoU Plot (unchanged)
+    # -------- Combined mIoU Plot --------
     plt.figure()
-    plt.plot(miou_scores, label="Validation mIoU", color="green")
+    plt.plot(train_miou_scores, label="Train mIoU", color="blue")
+    plt.plot(val_miou_scores, label="Validation mIoU", color="green")
     plt.xlabel("Epoch")
     plt.ylabel("mIoU")
-    plt.title("SegFormer Validation mIoU")
+    plt.title("SegFormer Train and Validation mIoU")
     plt.legend()
     plt.savefig("plots/segformer_miou_curve.png")
     plt.close()

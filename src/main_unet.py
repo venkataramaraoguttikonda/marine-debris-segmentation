@@ -78,7 +78,15 @@ def main(args):
         elif args.model == "unet++":
             model = UNetPlusPlus_CBAM(in_channels=11, num_classes=12)
 
-        train_model(model, train_loader, val_loader, device, num_classes=12, num_epochs=args.epochs, save_path=checkpoint_path)
+        # Use model_tag to control output plot file names
+        model_tag = args.model.replace("+", "pp")
+        train_model(
+            model, train_loader, val_loader, device,
+            num_classes=12,
+            num_epochs=args.epochs,
+            save_path=checkpoint_path,
+            model_tag=model_tag
+        )
         print("Training complete. Model saved to:", checkpoint_path)
 
     # -------- Prediction --------

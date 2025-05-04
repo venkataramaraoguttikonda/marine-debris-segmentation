@@ -1,9 +1,11 @@
 # Ignore data and predictions
-data/
+#data/
+data_original/
+data_test/
 predictions_*/
-vis_outputs/
-plots/
-trained_models/
+#vis_outputs/
+#plots/
+#trained_models/
 
 # Ignore Python cache and artifacts
 __pycache__/

@@ -10,7 +10,7 @@ from models.segformer_model import get_segformer_model
 from train.train_segformer import train_segformer
 from inference.inference_segformer import MaridaTestDataset, run_segformer_inference
 from evaluate.evaluate_segformer import evaluate_predictions
-from visualization.visualize_segformer import visualize_segformer_samples
+from visualization.visualize_segformer import visualize_paper_samples
 from utils import load_split_file, get_image_paths_from_ids
 
 # ------------------------------ Main Pipeline ------------------------------
@@ -74,8 +74,10 @@ def main(args):
     # -------- Visualization --------
     if args.visualize:
         print("Step 5: Visualizing results...")
-        visualize_segformer_samples(pred_dir=pred_dir, save_dir="vis_outputs/segformer")
+        os.environ["MODEL_TAG"] = "segformer"
+        visualize_paper_samples(pred_dir=pred_dir)
         print("Visualization complete.")
+
 
 # ------------------------------ Argument Parser ------------------------------
 if __name__ == "__main__":

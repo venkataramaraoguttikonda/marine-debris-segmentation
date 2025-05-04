@@ -31,10 +31,11 @@ def train_model(
     device,
     num_classes=12,
     num_epochs=75,
-    save_path="trained_models/model.pth"
+    save_path="trained_models/model.pth",
+    model_tag="unet"
 ):
     """
-    Trains a segmentation model and evaluates it on validation set.
+    Trains a segmentation model and evaluates it on a validation set.
     """
     model.to(device)
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -50,7 +51,8 @@ def train_model(
     best_iou = 0.0
     train_losses = []
     val_losses = []
-    miou_scores = []
+    train_miou_scores = []
+    val_miou_scores = []
 
     for epoch in range(num_epochs):
         model.train()
@@ -73,8 +75,35 @@ def train_model(
         train_losses.append(avg_train_loss)
         print(f"Epoch [{epoch+1}] Training Loss: {avg_train_loss:.4f}")
 
-        # --------validation--------
+        # -------- Train mIoU --------
         model.eval()
+        iou_per_class = torch.zeros(num_classes).to(device)
+        total_per_class = torch.zeros(num_classes).to(device)
+
+        with torch.no_grad():
+            for batch in train_loader:
+                images = batch['image'].to(device)
+                labels = batch['label'].to(device)
+
+                outputs = model(images)
+                preds = outputs.argmax(dim=1)
+                valid_mask = labels != 255
+
+                for cls in range(num_classes):
+                    pred_inds = (preds == cls)
+                    label_inds = (labels == cls)
+                    intersection = ((pred_inds & label_inds) & valid_mask).sum().float()
+                    union = ((pred_inds | label_inds) & valid_mask).sum().float()
+                    if union > 0:
+                        iou = intersection / (union + 1e-6)
+                        iou_per_class[cls] += iou
+                        total_per_class[cls] += 1
+
+        train_mean_iou = (iou_per_class / (total_per_class + 1e-6)).mean().item()
+        train_miou_scores.append(train_mean_iou)
+        print(f"Epoch [{epoch+1}] Train mIoU: {train_mean_iou:.4f}")
+
+        # -------- Validation --------
         val_loss = 0.0
         correct = 0
         total = 0
@@ -98,9 +127,8 @@ def train_model(
                 for cls in range(num_classes):
                     pred_inds = (preds == cls)
                     label_inds = (labels == cls)
-                    valid_mask = labels != 255
-                    intersection = ((pred_inds & label_inds) & valid_mask).sum().float()
-                    union = ((pred_inds | label_inds) & valid_mask).sum().float()
+                    intersection = ((pred_inds & label_inds) & mask).sum().float()
+                    union = ((pred_inds | label_inds) & mask).sum().float()
                     if union > 0:
                         iou = intersection / (union + 1e-6)
                         iou_per_class[cls] += iou
@@ -110,34 +138,36 @@ def train_model(
         val_losses.append(avg_val_loss)
 
         val_acc = correct / total
-        mean_iou = (iou_per_class / (total_per_class + 1e-6)).mean().item()
-        miou_scores.append(mean_iou)
+        val_mean_iou = (iou_per_class / (total_per_class + 1e-6)).mean().item()
+        val_miou_scores.append(val_mean_iou)
 
-        print(f"Epoch [{epoch+1}] Val Loss: {avg_val_loss:.4f}, Acc: {val_acc:.4f}, mIoU: {mean_iou:.4f}")
+        print(f"Epoch [{epoch+1}] Val Loss: {avg_val_loss:.4f}, Acc: {val_acc:.4f}, mIoU: {val_mean_iou:.4f}")
 
-        if mean_iou > best_iou:
-            best_iou = mean_iou
+        if val_mean_iou > best_iou:
+            best_iou = val_mean_iou
             torch.save({'model_state_dict': model.state_dict()}, save_path)
             print(f"Saved new best model to {save_path} with mIoU: {best_iou:.4f}")
 
-    # --------- Save loss and mIoU curves ---------
+    # -------- Plot & Save --------
     plt.figure()
     plt.plot(train_losses, label="Train Loss")
     plt.plot(val_losses, label="Val Loss")
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.title("UNet Loss Curve")
+    plt.title(f"{model_tag.upper()} Loss Curve")
     plt.legend()
-    plt.savefig("plots/unet_loss_curve.png")
+    plt.savefig(f"plots/{model_tag}_loss_curve.png")
     plt.close()
 
+    # Combined mIoU plot
     plt.figure()
-    plt.plot(miou_scores, label="Validation mIoU", color="green")
+    plt.plot(train_miou_scores, label="Train mIoU", color="blue")
+    plt.plot(val_miou_scores, label="Validation mIoU", color="green")
     plt.xlabel("Epoch")
     plt.ylabel("mIoU")
-    plt.title("UNet mIoU Curve")
+    plt.title(f"{model_tag.upper()} mIoU Curve")
     plt.legend()
-    plt.savefig("plots/unet_miou_curve.png")
+    plt.savefig(f"plots/{model_tag}_miou_curve.png")
     plt.close()
 
     return model
