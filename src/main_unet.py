@@ -24,7 +24,7 @@ def load_model(model_name, in_channels, num_classes, device, checkpoint_path):
     else:
         raise ValueError(f"Unsupported model name: {model_name}")
 
-    state = torch.load(checkpoint_path)
+    state = torch.load(checkpoint_path, map_location=device)
     model.load_state_dict(state["model_state_dict"] if isinstance(state, dict) and "model_state_dict" in state else state)
     model.to(device)
     model.eval()

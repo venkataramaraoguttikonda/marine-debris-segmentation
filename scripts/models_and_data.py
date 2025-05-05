@@ -30,7 +30,7 @@ zip_path = hf_hub_download(
 
 # Extract to `data/` folder
 with zipfile.ZipFile(zip_path, "r") as zip_ref:
-    zip_ref.extractall("data")
+    zip_ref.extractall(".")
 
 # Remove the zip file after extraction
 os.remove(zip_path)

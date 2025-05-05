@@ -199,8 +199,8 @@ The following metrics are reported: **Pixel Accuracy**, **Mean IoU**, and **Macr
 
 | Model              | Pixel Accuracy | Mean IoU | Macro F1 Score |
 |--------------------|----------------|----------|----------------|
-| UNet_CBAM          | 0.9190         | 0.5388   | 0.6543         |
-| UNetPlusPlus_CBAM  | 0.9224         | 0.6014   | 0.7061         |
+| UNet_CBAM          | 0.9224         | 0.6014   | 0.7061         |
+| UNetPlusPlus_CBAM  | 0.9190         | 0.5388   | 0.6543         |
 | SegFormer          | **0.9737**     | **0.7309** | **0.8234**          |
 
 > *SegFormer achieved the highest overall performance in terms of accuracy and mIoU.*
