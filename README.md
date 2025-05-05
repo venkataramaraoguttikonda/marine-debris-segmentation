@@ -90,6 +90,12 @@ The classification masks (`*_cl.tif`) include the following class IDs:
 
 This project uses **Python 3.9+** and is managed via **conda**. All dependencies are defined in the `environment.yml` file.
 
+#### Clone the Repository
+
+```bash
+git clone https://github.com/venkataramaraoguttikonda/marine-debris-segmentation.git
+cd marine-debris-segmentation
+
 #### Create the Environment
 
 ```bash
