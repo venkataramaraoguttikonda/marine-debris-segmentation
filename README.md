@@ -4,7 +4,7 @@ This repository provides a modular and scalable deep learning pipeline for seman
 
 The selected architectures incorporate **attention mechanisms** (e.g., CBAM and Transformers) to enhance feature learning and spatial understanding, especially in cluttered ocean scenes. The goal is to improve detection of complex sea surface phenomena including marine debris, Sargassum, ship wakes, foam, and more.
 
-🔧 The pipeline includes:
+The pipeline includes:
 - Custom PyTorch datasets and loaders tailored for MARIDA
 - Attention-enhanced CNNs (CBAM) and Transformer-based segmentation
 - Class-weighted loss for handling class imbalance
@@ -127,7 +127,7 @@ This repository supports training and evaluation of three segmentation models: *
 
 
 
-#### Script-Based Execution
+####  Training model from scratch
 
 Each model has a dedicated shell script under `scripts/` for running the full pipeline:
 
@@ -145,17 +145,23 @@ chmod +x scripts/run_segformer.sh
 ./scripts/run_segformer.sh
 ```
 
+#### Inference + Evaluation using trained Models
 
+To run inference, evaluation, and visualization using trained models, **first download the model weights** from Hugging Face:
 
-#### Inference + Evaluation using Pretrained Models
+```bash
+python scripts/trained_models.py
+```
 
-If you only want to run inference, evaluation, and visualization using pretrained models (already available in `trained_models/`), use:
+This will download all required `.pth` files into the `trained_models/` directory.
+
+Then, run the following commands:
 
 ```bash
 # UNet
 python src/main.py --model unet --predict --evaluate --visualize
 
-# UNet++
+# UNet++ (UNetPlusPlus_CBAM)
 python src/main.py --model unet++ --predict --evaluate --visualize
 
 # SegFormer
@@ -164,10 +170,43 @@ python src/main_segformer.py --predict --evaluate --visualize
 
 These commands use the **test split only**, which is included in the repository under `data/splits/test_X.txt`.
 
-
-
-**Note:** The outputs will be saved under:
+**Note:** Outputs will be saved under:
 
 - `predictions_unet/`, `predictions_unetpp/`, `predictions_segformer/`
 - `vis_outputs/unet/`, `vis_outputs/unetpp/`, `vis_outputs/segformer/`
 - `plots/` for training loss/mIoU curves (if training is run)
+
+
+## Citation
+
+If you use this repository or any part of it in your research or project, please cite:
+
+- **MARIDA Dataset:**  
+  R. Veit et al., “MARIDA: A Benchmark for Marine Debris Detection in Sentinel-2 Satellite Imagery,” *IGARSS 2022*.  
+  DOI: [10.1109/IGARSS46834.2022.9884340](https://doi.org/10.1109/IGARSS46834.2022.9884340)
+
+- **SegFormer Model:**  
+  E. Xie et al., “SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers,” *NeurIPS 2021*.  
+  [https://arxiv.org/abs/2105.15203](https://arxiv.org/abs/2105.15203)
+
+- **Hugging Face Transformers:**  
+  [https://github.com/huggingface/transformers](https://github.com/huggingface/transformers)
+
+- **PyTorch:**  
+  [https://pytorch.org/](https://pytorch.org/)
+
+
+
+## Acknowledgements
+
+This work was developed as part of the **Deep Learning for Computer Vision (DS265)** course at the **Indian Institute of Science (IISc), Bengaluru**.
+
+**Course Instructor:** Prof. R. Venkatesh Babu
+
+**Contributors:**
+- Venkata Ramarao Guttikonda (M.Tech – CAOS, IISc)
+- Ananya Krishna Devupalli (M.Tech – CAOS, IISc)
+
+Special thanks to:
+- **MARIDA Dataset** by R. Veit et al.
+- The developers of **PyTorch**, **Hugging Face Transformers**, and other open-source tools used in this project
