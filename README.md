@@ -200,8 +200,8 @@ The following metrics are reported: **Pixel Accuracy**, **Mean IoU**, and **Macr
 Below are the combined training and validation loss, and mIoU plots for **SegFormer** (best-performing model):
 
 <p align="center">
-  <img src="plots/segformer_combined_loss_curve.png" width="400"/>
-  <img src="plots/segformer_miou_curve.png" width="400"/>
+  <img src="images/segformer_combined_loss_curve.png" width="400"/>
+  <img src="images/segformer_miou_curve.png" width="400"/>
 </p>
 
 ---
