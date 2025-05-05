@@ -168,13 +168,13 @@ Then, run the following commands:
 
 ```bash
 # UNet
-python src/main_unet.py --model unet --predict --evaluate --visualize
+python src/trained_unet.py --model unet --predict --evaluate --visualize
 
 # UNet++ (UNetPlusPlus_CBAM)
-python src/main_unet.py --model unet++ --predict --evaluate --visualize
+python src/trained_unet.py --model unet++ --predict --evaluate --visualize
 
 # SegFormer
-python src/main_segformer.py --predict --evaluate --visualize
+python src/trained_segformer.py --predict --evaluate --visualize
 ```
 
 These commands use the **test split only**, which is included in the repository under `data/splits/test_X.txt`.
