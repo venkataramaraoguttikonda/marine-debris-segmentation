@@ -13,13 +13,15 @@ The pipeline includes:
 
 
 
+
 ## Table of Contents
 
-- [Dataset](#-dataset)
-- [Installation & Setup](#️-installation--setup)
-- [Training & Evaluation](#-training--evaluation)
-- [Results & Performance](#-results--performance)
-
+- [Dataset](#dataset)
+- [Installation & Setup](#installation--setup)
+- [Training & Evaluation](#training--evaluation)
+- [Results & Performance](#results--performance)
+- [Citation](#citation)
+- [Acknowledgements](#acknowledgements)
 
 
 ## Dataset
@@ -175,6 +177,51 @@ These commands use the **test split only**, which is included in the repository 
 - `predictions_unet/`, `predictions_unetpp/`, `predictions_segformer/`
 - `vis_outputs/unet/`, `vis_outputs/unetpp/`, `vis_outputs/segformer/`
 - `plots/` for training loss/mIoU curves (if training is run)
+
+
+## Results & Performance
+
+This section summarizes both quantitative metrics and qualitative outputs for all models: **UNet_CBAM**, **UNetPlusPlus_CBAM**, and **SegFormer**.
+
+#### Quantitative Evaluation (on Test Set)
+
+The following metrics are reported: **Pixel Accuracy**, **Mean IoU**, and **Macro F1 Score**.
+
+| Model              | Pixel Accuracy | Mean IoU | Macro F1 Score |
+|--------------------|----------------|----------|----------------|
+| UNet_CBAM          | 0.9190         | 0.5388   | 0.6543         |
+| UNetPlusPlus_CBAM  | 0.9224         | 0.6014   | 0.7061         |
+| SegFormer          | **0.9737**     | **0.7309** | **0.8234**          |
+
+> *SegFormer achieved the highest overall performance in terms of accuracy and mIoU.*
+
+#### Training Loss and mIoU Curves
+
+Below are the combined training and validation loss, and mIoU plots for **SegFormer** (best-performing model):
+
+<p align="center">
+  <img src="plots/segformer_combined_loss_curve.png" width="400"/>
+  <img src="plots/segformer_miou_curve.png" width="400"/>
+</p>
+
+---
+
+#### Visual Results (SegFormer Predictions)
+
+Below are example qualitative results (Input → Ground Truth → Prediction) from the SegFormer model:
+
+<p align="center">
+  <img src="images/S2_12-12-20_16PCC_6_vis.png" width="700"/>
+</p>
+
+<p align="center">
+  <img src="images/S2_22-12-20_18QYF_0_vis.png" width="700"/>
+</p>
+
+<p align="center">
+  <img src="images/S2_27-1-19_16QED_14_vis.png" width="700"/>
+</p>
+
 
 
 ## Citation
