@@ -182,10 +182,6 @@ python src/main_unet.py --model unet++ --predict --evaluate --visualize
 python src/main_segformer.py --predict --evaluate --visualize
 ```
 
-The scripts will automatically use the test data included in the downloaded `data/` folder.
-
-These commands use the **test split only**, which is included in the repository under `data/splits/test_X.txt`.
-
 **Note:** Outputs will be saved under:
 
 - `predictions_unet/`, `predictions_unetpp/`, `predictions_segformer/`
