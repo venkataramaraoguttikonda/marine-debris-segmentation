@@ -13,22 +13,22 @@ The selected architectures incorporate **attention mechanisms** (e.g., CBAM and 
 
 
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [📦 Dataset](#-dataset)
-- [⚙️ Installation & Setup](#️-installation--setup)
-- [🚀 Training & Evaluation](#-training--evaluation)
-- [📊 Results & Performance](#-results--performance)
+- [Dataset](#-dataset)
+- [Installation & Setup](#️-installation--setup)
+- [Training & Evaluation](#-training--evaluation)
+- [Results & Performance](#-results--performance)
 
 
 
-## 📦 Dataset
+## Dataset
 
 This project uses the **Marine Debris Archive (MARIDA)** — a weakly-supervised pixel-level semantic segmentation benchmark derived from Sentinel-2 satellite imagery. It is designed to detect marine debris and associated sea surface phenomena like **Sargassum**, **organic matter**, **ships**, **cloud shadows**, and **waves**.
 
 
 
-#### 📥 Download
+#### Download
 
 You can download the MARIDA dataset from:
 
@@ -52,7 +52,7 @@ marine-debris-segmentation/
 
 
 
-#### 🗂️ Label Classes
+#### Label Classes
 
 The classification masks (`*_cl.tif`) include the following class IDs:
 
@@ -75,20 +75,20 @@ The classification masks (`*_cl.tif`) include the following class IDs:
 | 14  | Wakes                     |
 | 15  | Mixed Water               |
 
-> ⚠️ *Class `0` (Background) and the optional `*_conf.tif` confidence maps are not used for training, but are helpful for filtering or visualization.*
+> *Class `0` (Background) and the optional `*_conf.tif` confidence maps are not used for training, but are helpful for filtering or visualization.*
 
 
 
-#### 📄 Citation
+#### Citation
 
 > R. Veit et al., “MARIDA: A Benchmark for Marine Debris Detection in Sentinel-2 Satellite Imagery,” *IGARSS 2022*.  
 > DOI: [10.1109/IGARSS46834.2022.9884340](https://doi.org/10.1109/IGARSS46834.2022.9884340)
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 This project uses **Python 3.9+** and is managed via **conda**. All dependencies are defined in the `environment.yml` file.
 
-#### 🛠️ Create the Environment
+#### Create the Environment
 
 ```bash
 conda env create -f environment.yml
@@ -97,7 +97,7 @@ conda activate marinedebri
 
 This installs PyTorch, Hugging Face Transformers, rasterio, matplotlib, and other required packages.
 
-#### 📁 Initial Folder Structure
+#### Initial Folder Structure
 
 After cloning and setting up, your project should look like this:
 
@@ -118,16 +118,16 @@ marine-debris-segmentation/
 └── README.md
 ```
 
-> 🔄 Additional folders like `trained_models/`, `predictions_*/`, `vis_outputs/`, and `plots/` are **automatically generated** during training, inference, and visualization steps.
+> Additional folders like `trained_models/`, `predictions_*/`, `vis_outputs/`, and `plots/` are **automatically generated** during training, inference, and visualization steps.
 
 
-## 🚀 Training & Evaluation
+## Training & Evaluation
 
 This repository supports training and evaluation of three segmentation models: **UNet_CBAM**, **UNetPlusPlus_CBAM**, and **SegFormer**.
 
 
 
-#### 📜 Script-Based Execution
+#### Script-Based Execution
 
 Each model has a dedicated shell script under `scripts/` for running the full pipeline:
 
@@ -147,7 +147,7 @@ chmod +x scripts/run_segformer.sh
 
 
 
-#### 🧪 Inference + Evaluation using Pretrained Models
+#### Inference + Evaluation using Pretrained Models
 
 If you only want to run inference, evaluation, and visualization using pretrained models (already available in `trained_models/`), use:
 
@@ -166,7 +166,7 @@ These commands use the **test split only**, which is included in the repository 
 
 
 
-🧠 **Note:** The outputs will be saved under:
+**Note:** The outputs will be saved under:
 
 - `predictions_unet/`, `predictions_unetpp/`, `predictions_segformer/`
 - `vis_outputs/unet/`, `vis_outputs/unetpp/`, `vis_outputs/segformer/`
