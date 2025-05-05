@@ -22,7 +22,7 @@ __pycache__/
 *.ipynb
 
 # Ignore model weights
-*.pth
+#*.pth
 
 # VSCode or PyCharm settings (optional)
 .vscode/
