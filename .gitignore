@@ -5,7 +5,7 @@ data_test/
 predictions_*/
 #vis_outputs/
 #plots/
-#trained_models/
+trained_models/
 
 # Ignore Python cache and artifacts
 __pycache__/
