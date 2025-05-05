@@ -4,6 +4,8 @@ data_original/
 data_test/
 predictions_*/
 git-lfs-3.6.1/
+data_1/
+data_2/
 #vis_outputs/
 #plots/
 #trained_models/

@@ -32,11 +32,21 @@ This project uses the **Marine Debris Archive (MARIDA)** — a weakly-supervised
 
 #### Download
 
-You can download the MARIDA dataset from:
+## Dataset
 
-- **[Radiant MLHub](https://mlhub.earth/data/marida)**
+This project uses the **Marine Debris Archive (MARIDA)** — a weakly-supervised pixel-level semantic segmentation benchmark derived from Sentinel-2 satellite imagery. It is designed to detect marine debris and associated sea surface phenomena like **Sargassum**, **organic matter**, **ships**, **cloud shadows**, and **waves**.
 
-After downloading, extract it under the `data/` directory:
+### Download
+
+You can either:
+
+- Automatically download the best-trained models and required dataset subset (for prediction, evaluation, and visualization) using:
+
+  ```bash
+  python scripts/models_and_data.py
+  ```
+
+- Or manually download the full MARIDA dataset from [Radiant MLHub](https://mlhub.earth/data/marida), and extract it under the `data/` directory:
 
 ```bash
 marine-debris-segmentation/
@@ -51,8 +61,6 @@ marine-debris-segmentation/
     │   └── test_X.txt
     └── labels_mapping.txt        # (optional - used for multi-label classification)
 ```
-
-
 
 #### Label Classes
 
@@ -154,28 +162,36 @@ chmod +x scripts/run_segformer.sh
 ./scripts/run_segformer.sh
 ```
 
-#### Inference + Evaluation using trained Models
 
-To run inference, evaluation, and visualization using trained models, **first download the model weights** from Hugging Face:
+## Inference and Evaluation Using Pretrained Models
+
+To run inference, evaluation, and visualization with the pretrained models and required dataset:
+
+#### Download Data and Trained Models
 
 ```bash
-python scripts/trained_models.py
+python scripts/models_and_data.py
 ```
 
-This will download all required `.pth` files into the `trained_models/` directory.
+This script will:
 
-Then, run the following commands:
+- Download the best-performing `.pth` model checkpoints into the `trained_models/` directory
+- Download and extract the required subset of the MARIDA dataset into the `data/` directory
+
+#### Run Inference and Evaluation
 
 ```bash
 # UNet
-python src/trained_unet.py --model unet --predict --evaluate --visualize
+python src/main_unet.py --model unet --predict --evaluate --visualize
 
 # UNet++ (UNetPlusPlus_CBAM)
-python src/trained_unet.py --model unet++ --predict --evaluate --visualize
+python src/main_unet.py --model unet++ --predict --evaluate --visualize
 
 # SegFormer
-python src/trained_segformer.py --predict --evaluate --visualize
+python src/main_segformer.py --predict --evaluate --visualize
 ```
+
+The scripts will automatically use the test data included in the downloaded `data/` folder.
 
 These commands use the **test split only**, which is included in the repository under `data/splits/test_X.txt`.
 
