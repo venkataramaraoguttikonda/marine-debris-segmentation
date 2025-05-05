@@ -95,6 +95,7 @@ This project uses **Python 3.9+** and is managed via **conda**. All dependencies
 ```bash
 git clone https://github.com/venkataramaraoguttikonda/marine-debris-segmentation.git
 cd marine-debris-segmentation
+```
 
 #### Create the Environment
 
