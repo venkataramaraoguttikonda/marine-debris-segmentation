@@ -225,7 +225,7 @@ Below are example qualitative results (Input → Ground Truth → Prediction) fr
 </p>
 
 <p align="center">
-  <img src="images/S2_14-11-18_48PZC_15_vis.png" width="900"/>
+  <img src="images/S2_14-9-18_16PCC_19_vis.png" width="900"/>
 </p>
 
 <p align="center">
