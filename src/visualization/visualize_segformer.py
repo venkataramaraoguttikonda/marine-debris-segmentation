@@ -127,10 +127,14 @@ def visualize_paper_samples(pred_dir):
         pred_dir (str): Directory containing predicted masks.
     """
     samples_paper = [
-        'data/patches/S2_12-12-20_16PCC_6.tif',
+        'data/patches/S2_12-12-20_16PCC_19.tif',
         'data/patches/S2_22-12-20_18QYF_0.tif',
-        'data/patches/S2_27-1-19_16QED_14.tif',
-        'data/patches/S2_14-9-18_16PCC_13.tif'
+        'data/patches/S2_14-11-18_48PZC_0.tif',
+        'data/patches/S2_14-11-18_48PZC_15.tif',
+        'data/patches/S2_14-11-18_48PZC_8.tif',
+        'data/patches/S2_14-9-18_16PCC_19.tif',
+        'data/patches/S2_14-9-18_16PCC_32.tif'
+
     ]
 
     for img_path in samples_paper:

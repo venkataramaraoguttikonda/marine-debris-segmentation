@@ -5,7 +5,7 @@ This repository provides a modular and scalable deep learning pipeline for seman
 The selected architectures incorporate **attention mechanisms** (e.g., CBAM and Transformers) to enhance feature learning and spatial understanding, especially in cluttered ocean scenes. The goal is to improve detection of complex sea surface phenomena including marine debris, Sargassum, ship wakes, foam, and more.
 
 The pipeline includes:
-- Custom PyTorch datasets and loaders tailored for MARIDA
+- Custom PyTorch dataloaders tailored for MARIDA
 - Attention-enhanced CNNs (CBAM) and Transformer-based segmentation
 - Class-weighted loss for handling class imbalance
 - Automated scripts for training, inference, evaluation, and visualization
@@ -154,9 +154,9 @@ chmod +x scripts/run_segformer.sh
 ```
 
 
-## Inference and Evaluation Using Pretrained Models
+## Inference and Evaluation of our Best Models
 
-To run inference, evaluation, and visualization with the pretrained models and required dataset:
+To run inference, evaluation, and visualization on test dataset:
 
 #### Download Data and Trained Models
 
