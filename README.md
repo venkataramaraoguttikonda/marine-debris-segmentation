@@ -221,15 +221,15 @@ Below are the combined training and validation loss, and mIoU plots for **SegFor
 Below are example qualitative results (Input → Ground Truth → Prediction) from the SegFormer model:
 
 <p align="center">
-  <img src="images/S2_12-12-20_16PCC_6_vis.png" width="700"/>
+  <img src="images/S2_14-11-18_48PZC_8_vis.png" width="700"/>
+</p>
+
+<p align="center">
+  <img src="images/S2_14-11-18_48PZC_15_vis.png" width="700"/>
 </p>
 
 <p align="center">
   <img src="images/S2_22-12-20_18QYF_0_vis.png" width="700"/>
-</p>
-
-<p align="center">
-  <img src="images/S2_27-1-19_16QED_14_vis.png" width="700"/>
 </p>
 
 
